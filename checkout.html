@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="style1.css">
+    <!-- Include any necessary CSS files -->
+</head>
+<body>
+    <h1>Checkout</h1>
+
+    <div class="checkout-container"  action="process_payment.php" method="post">
+        <div class="customer-info">
+            <h2>Customer Information</h2>
+            <form id="customer-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">phone Number:</label>
+                    <input type="number" id="phone-number" name="name" required>
+                </div>
+                <!-- Add more form fields as needed (e.g., address, phone number) -->
+            </form>
+        </div>
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div class="cart-items">
+                <!-- Display cart items here -->
+            </div>
+            <div class="total-price">
+                <!-- Display total price here -->
+            </div>
+        </div>
+        <div class="payment-options">
+            <h2>Payment Options</h2>
+            <!-- Add payment options here (e.g., credit card, PayPal) -->
+        </div>
+        <!-- <button id="submit-order">Submit Order</button> -->
+        <button id="submit-order">Submit Order</button>
+    </div>
+
+    <script src="script.js"></script> <!-- Make sure this line is uncommented -->
+    
+    <script src="backgroundSync.js"></script>
+
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+    <script>
+        // Function to trigger background sync
+function triggerBackgroundSync() {
+  if ('SyncManager' in window) {
+      navigator.serviceWorker.ready.then(function(registration) {
+          return registration.sync.register('checkoutDataSync');
+      }).catch(function(err) {
+          console.error('Background sync registration failed:', err);
+      });
+  }
+}
+        
+    </script>
+
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartItemsContainer = document.querySelector('.cart-items');
+            const totalPriceElement = document.querySelector('.total-price');
+
+            // Retrieve cart items from localStorage
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            
+            // Initialize total price
+            let totalPrice = 0;
+
+            // Clear existing content
+            cartItemsContainer.innerHTML = '';
+
+            // Display each cart item
+            cartItems.forEach(item => {
+                const cartItemHTML = `
+                    <div class="cart-item">
+                        <span class="fas fa-times"></span>
+                        <div class="content">
+                            <h3>${item.name}</h3>
+                            <div class="price">$${item.price.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.insertAdjacentHTML('beforeend', cartItemHTML);
+                totalPrice += item.price;
+            });
+
+            // Display total price
+            totalPriceElement.textContent = `Total: $${totalPrice.toFixed(2)}`;
+            
+            //Background Snc Integration
+            if ('SyncManager' in window) {
+                navigator.serviceWorker.ready.then(function(registration) {
+                    return registration.sync.register('checkoutDataSync');
+                }).catch(function(err) {
+                    console.error('Background sync registration failed:', err );
+                });
+            
+            }
+        });
+    </script> -->
+<!--     <script>
+        //Background Snc Integration
+        document.addEventListener('DOMContentLoaded', function() {
+        if ('SyncManager' in window) {
+                navigator.serviceWorker.ready.then(function(registration) {
+                    return registration.sync.register('checkoutDataSync');
+                }).catch(function(err) {
+                    console.error('Background sync registration failed:', err );
+                });
+            
+            }
+        });
+    </script> -->
+
+</body>
+</html>
+
+<!-- document.getElementById('submit-order').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    const formData = {
+        // Collect form data here (order items, customer details, etc.)
+    };
+
+    // Save form data to local storage for background sync
+    const queuedFormData = JSON.parse(localStorage.getItem('queuedFormData')) || [];
+    queuedFormData.push(formData);
+    localStorage.setItem('queuedFormData', JSON.stringify(queuedFormData));
+
+    // Trigger background sync
+    if ('SyncManager' in window) {
+        navigator.serviceWorker.ready.then(function(registration) {
+            return registration.sync.register('syncFormData');
+        });
+    }
+
+    // Optionally, you can redirect the user or display a success message
+});
+ -->
